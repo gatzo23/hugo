@@ -15,7 +15,7 @@ import urllib3
 #Uhrzeit
 def spaet():
     zeit = datetime.now()
-    strZeit = zeit.strftime('%H:%M:%S')
+    strZeit = zeit.strftime('%H:%M')
     return("Die Uhrzeit ist " + strZeit)
 
 #Openhab, SmartHome
@@ -98,17 +98,22 @@ def weather(ort):
     except:
         pass
     if ("heute" in ort) or ("ist" in ort):
+        print("in heute")
         tempJson = requests.get("http://api.openweathermap.org/data/2.5/weather?q=" + wetterOrt + "&appid=" + apiKey + "&units=metric")
-        getTemp(tempJson, wetterOrt)
+        result = getTemp(tempJson, wetterOrt)
+        print(result)
+        return result
     elif("morgen" in ort):
         x = 1
         tempJsonFC = requests.get("http://api.openweathermap.org/data/2.5/forecast?q=" + wetterOrt + "&appid=" + apiKey + "&units=metric")
         #tempJson = Daten von OpenWeatherMap, wetterOrt = Ort, befehl=Text aus Befehl, x = Anzahl wie oft die for Schleife später durchlaufen wird
-        getTempFc(tempJsonFC, wetterOrt, x)
+        result = getTempFc(tempJsonFC, wetterOrt, x)
+        return result
     elif ("wird" in ort):
         x = 3
         tempJsonFC = requests.get("http://api.openweathermap.org/data/2.5/forecast?q=" + wetterOrt + "&appid=" + apiKey + "&units=metric")
-        getTempFc(tempJsonFC, wetterOrt, x)
+        result = getTempFc(tempJsonFC, wetterOrt, x)
+        return result
     else:
         return ("Ich konnte den Tag nicht finden")
 
@@ -119,17 +124,17 @@ def calculation(aufgabe):
     lst = aufgabe.split(" ")
     try:
         if(lst[4] == "x"):
-            print(int(lst[3])*int(lst[5]))
-            return (int(lst[3])*int(lst[5]))
+            result = (int(lst[3])*int(lst[5]))
+            return ('Das Ergebnis ist {0}'.format(result))
         elif(lst[4] == "+"):
-            print(int(lst[3])+int(lst[5]))
-            return (int(lst[3])+int(lst[5]))
+            result = (int(lst[3])+int(lst[5]))
+            return ('Das Ergebnis ist {0}'.format(result))
         elif(lst[4] == "-"):
-            print(int(lst[3])-int(lst[5]))
-            return (int(lst[3])-int(lst[5]))
+            result = (int(lst[3])-int(lst[5]))
+            return ('Das Ergebnis ist {0}'.format(result))
         elif(lst[4] == "/"):
-            print(int(lst[3])/int(lst[5]))
-            return(int(lst[3])/int(lst[5]))
+            result = (int(lst[3])/int(lst[5]))
+            return ('Das Ergebnis ist {0}'.format(result))
     except:
         pass
 

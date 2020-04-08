@@ -5,7 +5,7 @@ from threading import *
 from konversation import Speak
 import speech_recognition as sr
 import datetime
-import tasks
+from tasks import *
 from listen import *
 from bot import bot1
 
@@ -58,7 +58,7 @@ def main():
     #cascade_file = '%s' % (xml) #Windows Schreibweise
 
     #images, labels = read_csv('c:\\users\\asus\\source\\repos\\lisa\\lisa\\faces.csv') #Windows Schreibweise
-    images, labels = read_csv('/Users/kaigatzlaff/python/Lisa/Lisa/faces.csv') #Linux Schreibweise
+    images, labels = read_csv('/Users/kaigatzlaff/python/Lisa/Hugo/faces.csv') #Linux Schreibweise
     model = create_and_train_model(images, labels)
 
     try:
@@ -74,8 +74,6 @@ def main():
     #Sprachsteuerung aktivieren
     t1 = Thread(target = listen)
     t1.start()
-    t2 = Thread(target = bot1)
-    t2.start()
 
     while True:
         ret, img = cap.read()
@@ -110,8 +108,10 @@ def main():
             else:
                 userTimeStamp[user] = datetime.now().timestamp()
                 Speak("Hallo {0}".format(user))
-                aufgabe("spät")
-                weather("heute in Gifhorn", "In {0} werden es xxx {1} Grad Celsius")
+                result = spaet()
+                Speak(result)
+                result = weather("heute in Gifhorn")
+                Speak(result)
         
         cv2.imshow('Kamera0', img)
 
